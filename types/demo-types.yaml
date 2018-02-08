@@ -1,0 +1,71 @@
+node_types:
+
+  cloudify.nodes.vRouter:
+    derived_from: cloudify.nodes.Router
+    interfaces:
+      cloudify.interfaces.lifecycle:
+        start:
+          implementation: scripts/router-start.py
+          executor: central_deployment_agent
+        stop:
+          implementation: scripts/router-stop.py
+          executor: central_deployment_agent
+
+
+  cloudify.nodes.vLB:
+    derived_from: cloudify.nodes.LoadBalancer
+    interfaces:
+      cloudify.interfaces.lifecycle:
+        start:
+          implementation: scripts/lb-start.py
+          executor: central_deployment_agent
+        stop:
+          implementation: scripts/lb-stop.py
+          executor: central_deployment_agent
+
+
+  cloudify.nodes.Net:
+    derived_from: cloudify.nodes.Network
+    interfaces:
+      cloudify.interfaces.lifecycle:
+        start:
+          implementation: scripts/network-start.py
+          executor: central_deployment_agent
+        stop:
+          implementation: scripts/network-stop.py
+          executor: central_deployment_agent
+
+
+relationships:
+
+  cloudify.relationships.rtr_connected_to_network:
+    derived_from: cloudify.relationships.connected_to
+    source_interfaces:
+      cloudify.interfaces.relationship_lifecycle:
+        preconfigure:
+          implementation: scripts/relationships/src-preconfigure.py
+          executor: central_deployment_agent
+        postconfigure:
+          implementation: scripts/relationships/src-postconfigure.py
+          executor: central_deployment_agent
+        establish:
+          implementation: scripts/relationships/src-establish.py
+          executor: central_deployment_agent
+        unlink:
+          implementation: scripts/relationships/src-unlink.py
+          executor: central_deployment_agent
+    target_interfaces:
+      cloudify.interfaces.relationship_lifecycle:
+        preconfigure:
+          implementation: scripts/relationships/trgt-preconfigure.py
+          executor: central_deployment_agent
+        postconfigure:
+          implementation: scripts/relationships/trgt-postconfigure.py
+          executor: central_deployment_agent
+        establish:
+          implementation: scripts/relationships/trgt-establish.py
+          executor: central_deployment_agent
+        unlink:
+          implementation: scripts/relationships/trgt-unlink.py
+          executor: central_deployment_agent
+

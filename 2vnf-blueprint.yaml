@@ -1,0 +1,22 @@
+tosca_definitions_version: cloudify_dsl_1_3
+
+imports:
+  - http://www.getcloudify.org/spec/cloudify/4.2/types.yaml
+  - types/demo-types.yaml
+
+node_templates:
+
+  vRTR-1:
+    type: cloudify.nodes.vRouter
+    relationships:
+      - type: cloudify.relationships.rtr_connected_to_network
+        target: network1
+
+  vRTR-2:
+    type: cloudify.nodes.vRouter
+    relationships:
+      - type: cloudify.relationships.rtr_connected_to_network
+        target: network1
+
+  network1:
+    type: cloudify.nodes.Net
