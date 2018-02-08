@@ -40,14 +40,17 @@ Besides of update workflow execution, this example is demonstrating what lifecyc
 
 ### STEP1: Create basic service chain
 
+```
 cfy blueprint upload -b 3vnf-bp ./3vnf-blueprint.yaml
 cfy deployment create service-chains -b 3vnf-bp
 cfy executions start -d service-chains install
+```
 
 ### STEP2: Update deployment
 
+```
 cfy deployments update  service-chains -p ./1vnf-blueprint.yaml
 cfy deployments update  service-chains -p ./2vnf-blueprint.yaml
 cfy deployments update  service-chains -p ./3vnf-blueprint.yaml
-
+```
 
